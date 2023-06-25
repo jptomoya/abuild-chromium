@@ -3,7 +3,7 @@ name: Lint
 on:
   push:
     paths:
-      - 'Dockerfile'
+      - 'Dockerfile*'
 
 jobs:
   lint:
@@ -16,5 +16,11 @@ jobs:
         uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: Dockerfile
+          verbose: true
+          failure-threshold: error
+      - name: Lint Dockerfile.wsnapshot
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: Dockerfile.wsnapshot
           verbose: true
           failure-threshold: error
