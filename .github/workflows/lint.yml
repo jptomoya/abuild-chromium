@@ -1,0 +1,20 @@
+name: Lint
+
+on:
+  push:
+    paths:
+      - 'Dockerfile'
+
+jobs:
+  lint:
+    name: Run Hadolint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Lint Dockerfile
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: Dockerfile
+          verbose: true
+          failure-threshold: error
