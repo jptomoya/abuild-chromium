@@ -1,6 +1,6 @@
-ARG ALPINE_VERSION=3.18
+ARG ALPINE_VERSION=edge
 FROM alpine:${ALPINE_VERSION} AS builder
-ARG COMMIT_ID=2aa1b9c9ec5335bdd86c96ebbe71d4691d4a66aa
+ARG COMMIT_ID=HEAD
 
 RUN apk update \
   && apk add --no-cache alpine-sdk sudo \
