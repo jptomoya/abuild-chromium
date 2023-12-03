@@ -43,6 +43,8 @@ docker run -d --rm -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY \
 * the `SYS_ADMIN` capability required to run Chromium.
 * Use `--disable-dev-shm-usage` because Docker's /dev/shm is usually too small.
 
+![image](https://github.com/jptomoya/abuild-chromium/assets/4786564/c8d6cb68-7dd1-4481-a04c-b6b26c53e433)
+
 ## Extracting apk and public key
 To extract the built Chromium apk and the corresponding public key for installation on other Alpine Linux environments, follow these steps:
 
@@ -52,8 +54,6 @@ $ docker cp $container_id:/opt/packages .
 $ docker cp $container_id:/etc/apk/keys/ .
 $ docker kill $container_id
 ```
-
-![image](https://github.com/jptomoya/abuild-chromium/assets/4786564/c8d6cb68-7dd1-4481-a04c-b6b26c53e433)
 
 ## References
 * [Alpine linux install specific (older) package version](https://medium.com/@scythargon/alpine-linux-install-specific-older-package-version-36eadca31fc1)
