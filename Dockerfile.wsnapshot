@@ -43,9 +43,12 @@ RUN abuild-keygen -a -i -n \
 
 FROM alpine:${ALPINE_VERSION}
 COPY --from=builder --chown=root:root /home/packager/.abuild/*.pub /etc/apk/keys
-COPY --from=builder --chown=root:root /home/packager/packages /root/packages
-RUN CHROMIUM_APK=$(find /root/packages/community/x86_64/ -name 'chromium-*.apk' -type f | sort -n | head -n 1) \
+WORKDIR /opt/packages
+COPY --from=builder --chown=root:root /home/packager/packages .
+RUN CHROMIUM_APK=$(find ./community/x86_64/ -name 'chromium-*.apk' -type f | sort -n | head -n 1) \
+  && [ -n "$CHROMIUM_APK" ] \
   && apk add --no-cache "${CHROMIUM_APK}" font-noto-cjk \
-  && rm -rf /root/packages \
   && adduser -D user
+
+WORKDIR /
 USER user
