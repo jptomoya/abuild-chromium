@@ -1,7 +1,9 @@
 # abuild-chromium
 Dockerfile to build and install Chromium for Alpine Linux apk from any commit ID.
 
-## Usage
+Note: it takes about 6 to 12 hours to build Chromium on a typical 8-core machine.
+
+## How to build
 In most cases, you can use the `Dockerfile`. You can specify the following build args:
 
 * ALPINE_VERSION: This refers to the base Docker image version of Alpine Linux that will be used to build and install Chromium.
@@ -10,13 +12,13 @@ In most cases, you can use the `Dockerfile`. You can specify the following build
 For example, to build [chromium 112.0.5615.165](https://gitlab.alpinelinux.org/alpine/aports/-/commit/e197e433add07f6416e0dd6cbd428256b4c5aa76) on alpine:3.17, you would use the following command:
 
 ```
-docker build --build-arg ALPINE_VERSION=3.17 --build-arg COMMIT_ID=e197e433add07f6416e0dd6cbd428256b4c5aa76 .
+docker build -t abuild-chromium --build-arg ALPINE_VERSION=3.17 --build-arg COMMIT_ID=e197e433add07f6416e0dd6cbd428256b4c5aa76 .
 ```
 
 To build an older commit where the `snapshot()` function is defined in APKBUILD, use the Dockerfile.wsnapshot as follows:
 
 ```
-docker build -f Dockerfile.wsnapshot .
+docker build -t abuild-chromium -f Dockerfile.wsnapshot .
 ```
 
 Depending on the commit id, you may need to add a special command during the builder stage to install build dependencies that are deprecated in newer Alpine releases, like this:
@@ -24,6 +26,19 @@ Depending on the commit id, you may need to add a special command during the bui
 ```
 apk add --no-cache --repository https://dl-cdn.alpinelinux.org/alpine/v3.16/community libgnome-keyring-dev
 ```
+
+## Usage example
+To run the built Docker image:
+
+```
+docker run -d --rm -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY \
+  -e WAYLAND_DISPLAY=$WAYLAND_DISPLAY -e XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR \
+  -e PULSE_SERVER=$PULSE_SERVER \
+  --cap-add SYS_ADMIN abuild-chromium chromium --disable-gpu --disable-dev-shm-usage --no-first-run
+```
+
+* the SYS_ADMIN capability required to run Chromium.
+* Use `--disable-dev-shm-usage` because Docker's /dev/shm is usually too small.
 
 ## References
 * [Alpine linux install specific (older) package version](https://medium.com/@scythargon/alpine-linux-install-specific-older-package-version-36eadca31fc1)
