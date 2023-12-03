@@ -3,6 +3,9 @@ Dockerfile to build and install Chromium for Alpine Linux apk from any commit ID
 
 Note: it takes about 6 to 12 hours to build Chromium on a typical 8-core machine.
 
+## Why build your own apk
+As far as I know, the official package repository for Alpine Linux doesn't provide older versions of packages in the same branch. So, if you need an older version of Chromium from a specific branch, you must build the apk yourself. This is why this repository exists. It's here to help you easily build any version of Chromium apk using Docker, especially when the official repository doesn't have the version you need.
+
 ## How to build
 In most cases, you can use the `Dockerfile`. You can specify the following build args:
 
@@ -41,7 +44,6 @@ docker run -d --rm -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY \
 * Use `--disable-dev-shm-usage` because Docker's /dev/shm is usually too small.
 
 ![image](https://github.com/jptomoya/abuild-chromium/assets/4786564/c8d6cb68-7dd1-4481-a04c-b6b26c53e433)
-
 
 ## References
 * [Alpine linux install specific (older) package version](https://medium.com/@scythargon/alpine-linux-install-specific-older-package-version-36eadca31fc1)
